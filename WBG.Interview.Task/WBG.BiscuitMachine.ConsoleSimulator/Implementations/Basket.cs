@@ -1,4 +1,5 @@
-﻿using WBG.BiscuitMachine.ConsoleSimulator.Interfaces.Parts;
+﻿using WBG.BiscuitMachine.ConsoleSimulator.Constants;
+using WBG.BiscuitMachine.ConsoleSimulator.Interfaces.Parts;
 
 namespace WBG.BiscuitMachine.ConsoleSimulator.Implementations;
 
@@ -27,10 +28,12 @@ public class Basket : IBasket
         int originalTop = Console.CursorTop;
 
         // Move the cursor to the top-right corner
-        Console.SetCursorPosition(Console.WindowWidth - 20, Console.WindowHeight - 1);
+        Console.SetCursorPosition(Console.WindowWidth - 20, 0);
 
+        Console.ForegroundColor = ConsoleColor.DarkYellow;
         // Update and display the cookie count
-        Console.Write($"Cookie baked: {_bakedCookies.Count}");
+        Console.Write($"{Emotes.Cookie} Cookie baked: {_bakedCookies.Count}");
+        Console.ResetColor();
 
         // Restore the original cursor position
         Console.SetCursorPosition(originalLeft, originalTop);

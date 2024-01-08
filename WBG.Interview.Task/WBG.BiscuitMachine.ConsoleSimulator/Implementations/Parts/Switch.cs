@@ -10,7 +10,6 @@ public class Switch : ISwitch
     private IOven _oven;
     public Switch(IOven oven)
     {
-        // Initial state is Off
         _currentState = new MachineOffState();
         _oven = oven;
     }
@@ -29,7 +28,7 @@ public class Switch : ISwitch
 
     public void Pause()
     {
-        _currentState = new MachinePausedState(this);
+        _currentState = new MachinePausedState();
         _currentState.Handle();
     }
 

@@ -4,4 +4,5 @@ public interface IMotor
 {
     void Start();
     void Stop();
+    void Pause();
 }

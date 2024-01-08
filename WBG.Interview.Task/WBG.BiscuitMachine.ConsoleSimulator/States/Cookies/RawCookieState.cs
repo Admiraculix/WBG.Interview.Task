@@ -6,6 +6,11 @@ public class RawCookieState : ICookieState
 {
     public void Process(Cookie cookie)
     {
-        Console.WriteLine("Cookie is in Raw state");
+        Console.WriteLine(this.ToString());
+    }
+
+    public override string ToString()
+    {
+        return "Cookie is in Raw state!";
     }
 }

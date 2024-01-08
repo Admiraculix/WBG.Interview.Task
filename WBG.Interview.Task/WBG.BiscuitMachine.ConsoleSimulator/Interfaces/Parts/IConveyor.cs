@@ -1,6 +1,4 @@
-﻿using WBG.BiscuitMachine.ConsoleSimulator.Implementations;
-
-namespace WBG.BiscuitMachine.ConsoleSimulator.Interfaces.Parts;
+﻿namespace WBG.BiscuitMachine.ConsoleSimulator.Interfaces.Parts;
 
 public interface IConveyor
 {

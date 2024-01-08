@@ -1,12 +1,15 @@
-﻿using WBG.BiscuitMachine.ConsoleSimulator.Interfaces;
+﻿using WBG.BiscuitMachine.ConsoleSimulator.Constants;
+using WBG.BiscuitMachine.ConsoleSimulator.Interfaces;
 
 namespace WBG.BiscuitMachine.ConsoleSimulator.States.Switch;
 
-// States for the machine
 public class MachineOffState : IState
 {
     public void Handle()
     {
-        Console.WriteLine("Machine is Off");
+        Console.ForegroundColor = ConsoleColor.Yellow;
+        Console.WriteLine($"{Emotes.Stop} Machine is Off");
+        Console.ResetColor();
     }
 }
+

@@ -15,7 +15,10 @@ public class MachineOnState : IState
 
     public void Handle()
     {
+        Console.ForegroundColor = ConsoleColor.Green;
         Console.WriteLine($"{Emotes.Play} Machine is On");
+        Console.ResetColor();
+
         _oven.TurnOnHeatingElement();
 
         // Wait for the oven to warm up

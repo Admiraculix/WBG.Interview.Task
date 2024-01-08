@@ -6,6 +6,11 @@ public class PreparedCookieState : ICookieState
 {
     public void Process(Cookie cookie)
     {
-        Console.WriteLine("Cookie is Prepared");
+        Console.WriteLine(this.ToString());
+    }
+
+    public override string ToString()
+    {
+        return "Cookie is Prepared!";
     }
 }

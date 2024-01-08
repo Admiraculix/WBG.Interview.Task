@@ -17,15 +17,17 @@ class Program
         IBasket basket = new Basket();
         IConveyor conveyor = new Conveyor(basket);
         IExtruder extruder = new Extruder(cookieFactory, conveyor);
-        IMotor motor = new Motor(conveyor);
         IOven oven = new Oven(conveyor);
         ISwitch machineSwitch = new Switch(oven);
+        IMotor motor = new Motor(conveyor, machineSwitch);
 
         // Create the biscuit machine using DI
         BiscuitMachineSimulator biscuitMachine = new BiscuitMachineSimulator(machineSwitch, motor, extruder, stamper, oven, conveyor, basket);
         biscuitMachine.Basket.DisplayCookieCount();
-
-        Console.WriteLine($"{Emotes.Tools} Enter operation (N: On, F: Off, P: Pause): ");
+        Console.ResetColor();
+        var operationString = "Enter operation";
+        var operatorCommandKeys = "(N: On, F: Off, P: Pause): ";
+        Console.WriteLine($"{Emotes.Tools} {Styles.BoldText(operationString)} {Styles.ItalicText(operatorCommandKeys)}");
 
         // Simulation loop
         while (true)
@@ -41,13 +43,11 @@ class Program
                     case 'N':
                     case 'n':
                         biscuitMachine.Switch.TurnOn();
-                        biscuitMachine.Conveyor.Start();
                         break;
 
                     case 'F':
                     case 'f':
                         biscuitMachine.Switch.TurnOff();
-                        biscuitMachine.Conveyor.Start();
                         break;
 
                     case 'P':

@@ -19,13 +19,17 @@ public class Oven : IOven
     public void TurnOnHeatingElement()
     {
         _heatingElementOn = true;
+        Console.ForegroundColor = ConsoleColor.DarkRed;
         Console.WriteLine("Oven Heating Element is On");
+        Console.ResetColor();
     }
 
     public void TurnOffHeatingElement()
     {
         _heatingElementOn = false;
+        Console.ForegroundColor = ConsoleColor.DarkGreen;
         Console.WriteLine("Oven Heating Element is Off");
+        Console.ResetColor();
     }
 
     public void SetTemperature(int temperature)
