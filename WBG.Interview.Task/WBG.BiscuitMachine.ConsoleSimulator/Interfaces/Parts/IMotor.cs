@@ -2,7 +2,7 @@
 
 public interface IMotor
 {
-    void Start();
-    void Stop();
-    void Pause();
+    void Start(IState currentState);
+    void Stop(IState currentState);
+    void Pause(IState currentState);
 }

@@ -8,8 +8,10 @@ public class Oven : IOven
 {
     private readonly IConveyor _conveyor;
 
-    private bool _heatingElementOn;
+    private bool _isHeatingElementOn;
     private int _temperature;
+
+    public bool IsHeatingElementOn { get => _isHeatingElementOn; private set => _isHeatingElementOn = value; }
 
     public Oven(IConveyor conveyor)
     {
@@ -18,15 +20,24 @@ public class Oven : IOven
 
     public void TurnOnHeatingElement()
     {
-        _heatingElementOn = true;
+        IsHeatingElementOn = true;
         Console.ForegroundColor = ConsoleColor.DarkRed;
         Console.WriteLine("Oven Heating Element is On");
         Console.ResetColor();
+
+        // Wait for the oven to warm up
+        while (GetTemperature() < 245)
+        {
+            UpdatingTemperatureInSameLine();
+            SetTemperature(GetTemperature() + 5);
+        }
+
+        Console.WriteLine("\nOven is ready. Starting the conveyor belt.");
     }
 
     public void TurnOffHeatingElement()
     {
-        _heatingElementOn = false;
+        IsHeatingElementOn = false;
         Console.ForegroundColor = ConsoleColor.DarkGreen;
         Console.WriteLine("Oven Heating Element is Off");
         Console.ResetColor();
@@ -44,7 +55,7 @@ public class Oven : IOven
 
     public void BakeCookie(Cookie cookie)
     {
-        if (_heatingElementOn)
+        if (IsHeatingElementOn)
         {
             Console.WriteLine($"Baking cookie... Oven Temperature: {_temperature}°C");
             // Simulate baking process (you can add more logic here)
@@ -58,5 +69,22 @@ public class Oven : IOven
         {
             Console.WriteLine("Cannot bake cookie. Heating element is off.");
         }
+    }
+
+    // Simulate a change in temperature
+    public void UpdatingTemperatureInSameLine()
+    {
+        // Simulate a delay before updating the temperature
+        Thread.Sleep(100);
+
+        // Clear the current line
+        Console.SetCursorPosition(0, Console.CursorTop);
+        Console.Write(new string(' ', Console.WindowWidth));
+
+        // Move the cursor back to the beginning of the line
+        Console.SetCursorPosition(0, Console.CursorTop);
+
+        // Update and print the new temperature
+        Console.Write($"{Emotes.Thermometer} Oven Temperature: {GetTemperature()}°C");
     }
 }

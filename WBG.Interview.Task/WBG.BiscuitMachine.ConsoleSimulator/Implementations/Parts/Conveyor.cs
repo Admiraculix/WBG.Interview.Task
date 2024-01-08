@@ -1,4 +1,5 @@
-﻿using WBG.BiscuitMachine.ConsoleSimulator.Interfaces.Parts;
+﻿using WBG.BiscuitMachine.ConsoleSimulator.Constants;
+using WBG.BiscuitMachine.ConsoleSimulator.Interfaces.Parts;
 
 namespace WBG.BiscuitMachine.ConsoleSimulator.Implementations.Parts;
 
@@ -15,6 +16,19 @@ public class Conveyor : IConveyor
     public void Start()
     {
         //TODO: need some logic here!
+        Console.WriteLine($"START C");
+    }
+
+    public void Stop()
+    {
+        //TODO: need some logic here!
+        Console.WriteLine($"STOP C");
+    }
+
+    public void Continue()
+    {
+        //TODO: need some logic here!
+        Console.WriteLine($"CONTINUE C");
     }
 
     public void EnqueueCookie(Cookie cookie)

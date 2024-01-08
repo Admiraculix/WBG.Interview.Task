@@ -12,17 +12,19 @@ class Program
     static void Main()
     {
         // Create machine parts
+
         ICookieFactory cookieFactory = new CookieFactory();
         IStamper stamper = new Stamper();
         IBasket basket = new Basket();
         IConveyor conveyor = new Conveyor(basket);
         IExtruder extruder = new Extruder(cookieFactory, conveyor);
         IOven oven = new Oven(conveyor);
-        ISwitch machineSwitch = new Switch(oven);
-        IMotor motor = new Motor(conveyor, machineSwitch);
+        IMotor motor = new Motor(conveyor);
+        ISwitch machineSwitch = new Switch(oven, motor);
 
         // Create the biscuit machine using DI
         BiscuitMachineSimulator biscuitMachine = new BiscuitMachineSimulator(machineSwitch, motor, extruder, stamper, oven, conveyor, basket);
+
         biscuitMachine.Basket.DisplayCookieCount();
         Console.ResetColor();
         var operationString = "Enter operation";

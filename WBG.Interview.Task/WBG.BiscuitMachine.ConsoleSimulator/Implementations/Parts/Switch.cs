@@ -6,23 +6,27 @@ namespace WBG.BiscuitMachine.ConsoleSimulator.Implementations.Parts;
 
 public class Switch : ISwitch
 {
+    private readonly IOven _oven;
+    private readonly IMotor _motor;
+
     private IState _currentState;
-    private IOven _oven;
-    public Switch(IOven oven)
+
+    public Switch(IOven oven, IMotor motor)
     {
-        _currentState = new MachineOffState();
         _oven = oven;
+        _motor = motor;
+        _currentState = new MachineOffState(_motor);
     }
 
     public void TurnOn()
     {
-        _currentState = new MachineOnState(_oven);
+        _currentState = new MachineOnState(_oven, _motor);
         _currentState.Handle();
     }
 
     public void TurnOff()
     {
-        _currentState = new MachineOffState();
+        _currentState = new MachineOffState(_motor);
         _currentState.Handle();
     }
 

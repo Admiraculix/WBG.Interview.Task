@@ -7,4 +7,5 @@ public interface IOven
     void SetTemperature(int temperature);
     int GetTemperature();
     void BakeCookie(Cookie cookie);
+    bool IsHeatingElementOn { get; }
 }

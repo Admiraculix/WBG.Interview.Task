@@ -1,4 +1,5 @@
 ﻿using WBG.BiscuitMachine.ConsoleSimulator.Constants;
+using WBG.BiscuitMachine.ConsoleSimulator.Interfaces;
 using WBG.BiscuitMachine.ConsoleSimulator.Interfaces.Parts;
 using WBG.BiscuitMachine.ConsoleSimulator.States.Switch;
 
@@ -7,37 +8,36 @@ namespace WBG.BiscuitMachine.ConsoleSimulator.Implementations.Parts;
 public class Motor : IMotor
 {
     private readonly IConveyor _conveyor;
-    private readonly ISwitch _switch;
 
-
-    public Motor(IConveyor conveyor, ISwitch @switch)
+    public Motor(IConveyor conveyor)
     {
         _conveyor = conveyor;
-        _switch = @switch;
     }
 
-    public void Start()
+    public void Start(IState currentState)
     {
-        if (_switch is MachineOnState)
+        if (currentState is MachineOnState)
         {
             Console.WriteLine($"{Emotes.Gear} Motor Started - One pulse per revolution");
             _conveyor.Start();
         }
     }
 
-    public void Stop()
+    public void Stop(IState currentState)
     {
-        if (_switch is MachineOffState)
+        if (currentState is MachineOffState)
         {
             Console.WriteLine($"{Emotes.Gear} Motor Stopped");
+            _conveyor.Continue();
         }
     }
 
-    public void Pause()
+    public void Pause(IState currentState)
     {
-        if (_switch is MachinePausedState)
+        if (currentState is MachinePausedState)
         {
             Console.WriteLine($"{Emotes.Gear} Motor Paused");
+            _conveyor.Stop();
         }
     }
 }
