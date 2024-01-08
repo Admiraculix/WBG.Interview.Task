@@ -1,5 +1,4 @@
-﻿using EmojiToolkit;
-using WBG.BiscuitMachine.ConsoleSimulator.Constants;
+﻿using WBG.BiscuitMachine.ConsoleSimulator.Constants;
 using WBG.BiscuitMachine.ConsoleSimulator.Interfaces.Parts;
 using WBG.BiscuitMachine.ConsoleSimulator.States.Cookies;
 
@@ -7,8 +6,15 @@ namespace WBG.BiscuitMachine.ConsoleSimulator.Implementations.Parts;
 
 public class Oven : IOven
 {
+    private readonly IConveyor _conveyor;
+
     private bool _heatingElementOn;
     private int _temperature;
+
+    public Oven(IConveyor conveyor)
+    {
+        _conveyor = conveyor;
+    }
 
     public void TurnOnHeatingElement()
     {
@@ -32,15 +38,16 @@ public class Oven : IOven
         return _temperature;
     }
 
-    public void BakeCookie(Cookie cookie, IConveyor conveyor)
+    public void BakeCookie(Cookie cookie)
     {
         if (_heatingElementOn)
         {
             Console.WriteLine($"Baking cookie... Oven Temperature: {_temperature}°C");
             // Simulate baking process (you can add more logic here)
-            Thread.Sleep(1000); // Simulating 5 seconds of baking time
+            Thread.Sleep(5000); // Simulating 5 seconds of baking time
             cookie.State = new CookedCookieState(); // Change the state to cooked
-            conveyor.DequeueCookie();
+
+            _conveyor.DequeueCookie();
             Console.WriteLine($"{Emotes.Cookie} Cookie baked!\n\t{cookie}");
         }
         else

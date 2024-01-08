@@ -1,5 +1,4 @@
-﻿using EmojiToolkit;
-using WBG.BiscuitMachine.ConsoleSimulator.Constants;
+﻿using WBG.BiscuitMachine.ConsoleSimulator.Constants;
 using WBG.BiscuitMachine.ConsoleSimulator.Implementations;
 using WBG.BiscuitMachine.ConsoleSimulator.Implementations.Parts;
 using WBG.BiscuitMachine.ConsoleSimulator.Interfaces;
@@ -13,14 +12,14 @@ class Program
     static void Main()
     {
         // Create machine parts
-        IOven oven = new Oven();
-        ISwitch machineSwitch = new Switch(oven);
-        IMotor motor = new Motor();
         ICookieFactory cookieFactory = new CookieFactory();
-        IExtruder extruder = new Extruder(cookieFactory);
         IStamper stamper = new Stamper();
         IBasket basket = new Basket();
-        IConveyor conveyor = new Conveyor(motor, basket);
+        IConveyor conveyor = new Conveyor(basket);
+        IExtruder extruder = new Extruder(cookieFactory, conveyor);
+        IMotor motor = new Motor(conveyor);
+        IOven oven = new Oven(conveyor);
+        ISwitch machineSwitch = new Switch(oven);
 
         // Create the biscuit machine using DI
         BiscuitMachineSimulator biscuitMachine = new BiscuitMachineSimulator(machineSwitch, motor, extruder, stamper, oven, conveyor, basket);
@@ -64,14 +63,11 @@ class Program
 
             if (biscuitMachine.Switch.GetState is MachineOnState)
             {
-                var newCookie = biscuitMachine.Extruder.ExtrudeCookie(biscuitMachine.Conveyor);
-                Thread.Sleep(1000); // Delay for 1 second
+                var newCookie = biscuitMachine.Extruder.ExtrudeCookie();
                 biscuitMachine.Stamper.StampCookie(newCookie);
-                Thread.Sleep(1000); // Delay for 1 second
-                biscuitMachine.Oven.BakeCookie(newCookie, biscuitMachine.Conveyor);
-                Thread.Sleep(5000); // Delay for 5 seconds (oven baking time)
+                biscuitMachine.Oven.BakeCookie(newCookie);
 
-                biscuitMachine.Basket.DisplayBasketContents();
+                // biscuitMachine.Basket.DisplayBasketContents();
                 biscuitMachine.Basket.DisplayCookieCount();
             }
         }

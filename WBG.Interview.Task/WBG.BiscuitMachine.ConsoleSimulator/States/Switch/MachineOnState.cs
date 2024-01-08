@@ -19,14 +19,14 @@ public class MachineOnState : IState
         _oven.TurnOnHeatingElement();
 
         // Wait for the oven to warm up
-        while (_oven.GetTemperature() < 225)
+        while (_oven.GetTemperature() < 245)
         {
             UpdatingTemperatureInSameLine();
             _oven.SetTemperature(_oven.GetTemperature() + 5);
         }
 
         _oven.SetTemperature(220);
-        Console.WriteLine("Oven is ready. Starting the conveyor belt.");
+        Console.WriteLine("\nOven is ready. Starting the conveyor belt.");
     }
 
     // Simulate a change in temperature

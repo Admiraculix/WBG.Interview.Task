@@ -5,18 +5,16 @@ namespace WBG.BiscuitMachine.ConsoleSimulator.Implementations.Parts;
 public class Conveyor : IConveyor
 {
     private readonly Queue<Cookie> _cookieQueue = new Queue<Cookie>();
-    private readonly IMotor _motor;
     private readonly IBasket _basket;
 
-    public Conveyor(IMotor motor, IBasket basket)
+    public Conveyor(IBasket basket)
     {
-        _motor = motor;
         _basket = basket;
     }
 
     public void Start()
     {
-        _motor.Start();
+        //TODO: need some logic here!
     }
 
     public void EnqueueCookie(Cookie cookie)

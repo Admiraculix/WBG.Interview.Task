@@ -1,5 +1,0 @@
-﻿namespace WBG.BiscuitMachine.ConsoleSimulator
-{
-
-
-}
