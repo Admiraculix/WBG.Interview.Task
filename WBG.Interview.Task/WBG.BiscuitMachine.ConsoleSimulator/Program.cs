@@ -1,9 +1,12 @@
-﻿using WBG.BiscuitMachine.ConsoleSimulator.Constants;
+﻿using System.Runtime.InteropServices;
+using System.Text;
+using WBG.BiscuitMachine.ConsoleSimulator.Constants;
 using WBG.BiscuitMachine.ConsoleSimulator.Implementations;
 using WBG.BiscuitMachine.ConsoleSimulator.Implementations.Parts;
 using WBG.BiscuitMachine.ConsoleSimulator.Interfaces;
 using WBG.BiscuitMachine.ConsoleSimulator.Interfaces.Parts;
 using WBG.BiscuitMachine.ConsoleSimulator.States.Switch;
+using WBG.BiscuitMachine.ConsoleSimulator.Utilities;
 
 namespace WBG.BiscuitMachine.ConsoleSimulator;
 
@@ -11,8 +14,16 @@ class Program
 {
     static void Main()
     {
-        // Create machine parts
+        Console.OutputEncoding = Encoding.UTF8;
 
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+        {
+            var osInfo = OSInformation.Info;
+            Emotes.OSInfo = osInfo;
+            //Console.WriteLine(osInfo);
+        }
+
+        // Create machine parts
         ICookieFactory cookieFactory = new CookieFactory();
         IStamper stamper = new Stamper();
         IBasket basket = new Basket();
@@ -24,6 +35,7 @@ class Program
 
         // Create the biscuit machine using DI
         BiscuitMachineSimulator biscuitMachine = new BiscuitMachineSimulator(machineSwitch, motor, extruder, stamper, oven, conveyor, basket);
+
 
         biscuitMachine.Basket.DisplayCookieCount();
         Console.ResetColor();
