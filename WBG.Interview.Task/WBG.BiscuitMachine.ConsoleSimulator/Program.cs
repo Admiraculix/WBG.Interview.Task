@@ -48,30 +48,7 @@ class Program
             // Check if a key is available
             if (Console.KeyAvailable)
             {
-                // Read the pressed key without blocking
-                char operation = Console.ReadKey(intercept: true).KeyChar;
-
-                switch (operation)
-                {
-                    case 'N':
-                    case 'n':
-                        biscuitMachine.Switch.TurnOn();
-                        break;
-
-                    case 'F':
-                    case 'f':
-                        biscuitMachine.Switch.TurnOff();
-                        break;
-
-                    case 'P':
-                    case 'p':
-                        biscuitMachine.Switch.Pause();
-                        break;
-
-                    default:
-                        Console.WriteLine("Invalid operation. Try again.");
-                        break;
-                }
+                SwitchBox.Control(biscuitMachine);
             }
 
             if (biscuitMachine.Switch.GetState is MachineOnState)
@@ -91,12 +68,30 @@ class Program
                 biscuitMachine.Basket.DisplayCookieCount();
                 Console.WriteLine($"---> {nameof(conveyor.ConveyorBelt)} with cookie count to be baked: {conveyor.ConveyorBelt.Count}!\n");
             }
+            else if (biscuitMachine.Switch.GetState is MachineOffState)
+            {
+                SwitchBox.Control(biscuitMachine); //TODO: fix me
 
-            //TODO: Fix me
-            //if (biscuitMachine.Switch.GetState is MachineOffState)
-            //{
-            //    biscuitMachine.Oven.BakeCookie();
-            //}
+                if (biscuitMachine.Oven.GetTemperature() > 0)
+                {
+                    biscuitMachine.Oven.IsHeatingElementOn = true;
+                }
+
+                biscuitMachine.Oven.BakeCookie();
+
+                biscuitMachine.Basket.DisplayCookieCount();
+                Console.WriteLine($"---> {nameof(conveyor.ConveyorBelt)} with cookie count to be baked: {conveyor.ConveyorBelt.Count}!\n");
+
+                if (conveyor.ConveyorBelt.Count == 0 && biscuitMachine.Oven.GetTemperature() > 0 && biscuitMachine.Switch.GetState is MachineOffState)
+                {
+                    biscuitMachine.Oven.IsHeatingElementOn = false;
+                    biscuitMachine.Oven.SetTemperature(0);
+                }
+            }
+            else
+            {
+                //TODO: Pause Logic
+            }
         }
     }
 }

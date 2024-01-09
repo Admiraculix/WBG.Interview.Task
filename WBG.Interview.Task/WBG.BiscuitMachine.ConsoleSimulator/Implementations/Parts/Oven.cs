@@ -9,9 +9,9 @@ public class Oven : IOven
     private readonly IConveyor _conveyor;
 
     private bool _isHeatingElementOn;
-    private int _temperature;
+    private int _temperature = 0;
 
-    public bool IsHeatingElementOn { get => _isHeatingElementOn; private set => _isHeatingElementOn = value; }
+    public bool IsHeatingElementOn { get => _isHeatingElementOn; set => _isHeatingElementOn = value; }
 
     public Oven(IConveyor conveyor)
     {
@@ -46,6 +46,13 @@ public class Oven : IOven
     public void SetTemperature(int temperature)
     {
         _temperature = temperature;
+
+        if (temperature == 0)
+        {
+            Console.ForegroundColor = ConsoleColor.DarkRed;
+            Console.WriteLine($"{Emotes.Thermometer} Oven Temperature: {GetTemperature()}°C");
+            Console.ResetColor();
+        }
     }
 
     public int GetTemperature()
