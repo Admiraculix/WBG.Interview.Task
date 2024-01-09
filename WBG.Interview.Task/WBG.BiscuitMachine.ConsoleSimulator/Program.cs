@@ -81,9 +81,19 @@ class Program
                 biscuitMachine.Stamper.StampCookie(newCookie);
                 biscuitMachine.Oven.BakeCookie(newCookie);
 
-                // biscuitMachine.Basket.DisplayBasketContents();
                 biscuitMachine.Basket.DisplayCookieCount();
+                Console.WriteLine($"---> {conveyor.ConveyorBelt.Count}");
+
             }
+            //else if (biscuitMachine.Switch.GetState is MachinePausedState)
+            //{
+            //    //TODO: logic here!?
+            //}
+            //else
+            //{
+            //    biscuitMachine.Oven.BakeCookie(conveyor.DequeueCookie(), biscuitMachine.Switch.GetState);
+            //}
+
         }
     }
 }

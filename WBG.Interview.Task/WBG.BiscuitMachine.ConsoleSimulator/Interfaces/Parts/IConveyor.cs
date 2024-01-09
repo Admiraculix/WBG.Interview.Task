@@ -7,4 +7,5 @@ public interface IConveyor
     void Start();
     void Stop();
     void Continue();
+    Queue<Cookie> ConveyorBelt { get; }
 }

@@ -7,5 +7,4 @@ public static class Styles
 
     public static string BoldText(string text) => $"{_bold}{text}{_reset}";
     public static string ItalicText(string text) => $"{_italic}{text}{_reset}";
-
 }

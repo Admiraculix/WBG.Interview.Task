@@ -38,9 +38,4 @@ public class Basket : IBasket
         // Restore the original cursor position
         Console.SetCursorPosition(originalLeft, originalTop);
     }
-
-    public void DisplayCookieCount1()
-    {
-
-    }
 }
