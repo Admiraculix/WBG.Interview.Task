@@ -1,7 +1,7 @@
 ﻿using WBG.BiscuitMachine.ConsoleSimulator.Constants;
 using WBG.BiscuitMachine.ConsoleSimulator.Interfaces.Parts;
 
-namespace WBG.BiscuitMachine.ConsoleSimulator.Implementations;
+namespace WBG.BiscuitMachine.ConsoleSimulator.Implementations.Parts;
 
 public class Basket : IBasket
 {

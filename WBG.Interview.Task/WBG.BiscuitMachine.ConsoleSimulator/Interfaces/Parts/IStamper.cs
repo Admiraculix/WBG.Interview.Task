@@ -2,6 +2,6 @@
 
 public interface IStamper
 {
-    void Pulse();
-    void StampCookie(Cookie newCookie);
+    void StampCookie(Cookie cookie);
+    int CurrentPulse { get; set; }
 }

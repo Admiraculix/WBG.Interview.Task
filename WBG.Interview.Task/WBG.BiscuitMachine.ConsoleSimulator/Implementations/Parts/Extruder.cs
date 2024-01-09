@@ -16,14 +16,18 @@ public class Extruder : IExtruder
         _conveyor = conveyor;
     }
 
+    public int CurrentPulse { get; set; }
+
     public Cookie ExtrudeCookie()
     {
-        Console.WriteLine("Extruder Pulses");
         var newCookie = _cookieFactory.CreateCookie(); // Create a new cookie from the factory
         _conveyor.EnqueueCookie(newCookie); // Enqueue the raw cookie to the conveyor
-
         Thread.Sleep(1000); // Simulate 1 second delay
-        Console.WriteLine("Extruding cookie...");
-        return newCookie; // Return the extruded raw cookie
+
+        Console.ForegroundColor = ConsoleColor.DarkBlue;
+        Console.WriteLine($"{CurrentPulse} Extruder Pulses -> Extruding new raw cookie...");
+        Console.ResetColor();
+
+        return newCookie;
     }
 }

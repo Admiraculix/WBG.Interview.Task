@@ -6,6 +6,6 @@ public interface IOven
     void TurnOffHeatingElement();
     void SetTemperature(int temperature);
     int GetTemperature();
-    void BakeCookie(Cookie cookie);
+    void BakeCookie();
     bool IsHeatingElementOn { get; }
 }

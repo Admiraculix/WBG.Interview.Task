@@ -14,4 +14,6 @@ public static class Emotes
     public static string Pause => Emoji.Get(":pause_button:").Raw.ReplaceEmojisWithFallback(OSInfo.Version);
     public static string Thermometer => Emoji.Get(":thermometer:").Raw.ReplaceEmojisWithFallback(OSInfo.Version);
     public static string Gear => Emoji.Get(":gear:").Raw.ReplaceEmojisWithFallback(OSInfo.Version);
+    public static string Chains => Emoji.Get(":chains:").Raw.ReplaceEmojisWithFallback(OSInfo.Version);
+    public static string Basket => Emoji.Get("::basket:").Raw.ReplaceEmojisWithFallback(OSInfo.Version);
 }

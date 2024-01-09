@@ -5,4 +5,5 @@ public interface IMotor
     void Start(IState currentState);
     void Stop(IState currentState);
     void Pause(IState currentState);
+    int Revolutions { get; set; }
 }

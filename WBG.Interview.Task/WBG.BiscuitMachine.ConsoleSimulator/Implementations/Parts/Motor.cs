@@ -14,11 +14,13 @@ public class Motor : IMotor
         _conveyor = conveyor;
     }
 
+    public int Revolutions { get; set; } = 3;
+
     public void Start(IState currentState)
     {
         if (currentState is MachineOnState)
         {
-            Console.WriteLine($"{Emotes.Gear} Motor Started - One pulse per revolution");
+            Console.WriteLine($"{Emotes.Gear} Motor Started - {Revolutions} pulse per revolution");
             _conveyor.Start();
         }
     }

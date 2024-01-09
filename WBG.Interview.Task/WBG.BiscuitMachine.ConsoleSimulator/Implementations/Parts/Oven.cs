@@ -23,7 +23,6 @@ public class Oven : IOven
         IsHeatingElementOn = true;
         Console.ForegroundColor = ConsoleColor.DarkRed;
         Console.WriteLine("Oven Heating Element is On");
-        Console.ResetColor();
 
         // Wait for the oven to warm up
         while (GetTemperature() < 245)
@@ -33,6 +32,7 @@ public class Oven : IOven
         }
 
         Console.WriteLine("\nOven is ready. Starting the conveyor belt.");
+        Console.ResetColor();
     }
 
     public void TurnOffHeatingElement()
@@ -53,21 +53,35 @@ public class Oven : IOven
         return _temperature;
     }
 
-    public void BakeCookie(Cookie cookie)
+    public void BakeCookie()
     {
         if (IsHeatingElementOn)
         {
-            Console.WriteLine($"Baking cookie... Oven Temperature: {_temperature}°C");
-            // Simulate baking process (you can add more logic here)
-            Thread.Sleep(5000); // Simulating 5 seconds of baking time
-            cookie.State = new CookedCookieState(); // Change the state to cooked
+            if (_conveyor.ConveyorBelt.Count > 0)
+            {
+                Console.ForegroundColor = ConsoleColor.DarkYellow;
+                Console.Write("Baking cookie... Oven Temperature: ");
+                Console.ResetColor();
 
-            _conveyor.DequeueCookie();
-            Console.WriteLine($"{Emotes.Cookie} Cookie baked!\n\t{cookie}");
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.Write($"{_temperature}°C\n");
+                Console.ResetColor();
+
+                // Simulate baking process (you can add more logic here)
+                var currentCookie = _conveyor.DequeueCookie();
+                currentCookie.State = new CookedCookieState(); // Change the state to cooked
+
+                Thread.Sleep(5000); // Simulating 5 seconds of baking time
+
+                Console.WriteLine($"{Emotes.Cookie} Cookie baked!\n\t{currentCookie}");
+            }
         }
         else
         {
-            Console.WriteLine("Cannot bake cookie. Heating element is off.");
+            if (_conveyor.ConveyorBelt.Count == 0)
+            {
+                Console.WriteLine("Cannot bake cookie. Heating element is off.");
+            }
         }
     }
 

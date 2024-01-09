@@ -3,4 +3,5 @@
 public interface IExtruder
 {
     Cookie ExtrudeCookie();
+   int CurrentPulse { get; set; }
 }

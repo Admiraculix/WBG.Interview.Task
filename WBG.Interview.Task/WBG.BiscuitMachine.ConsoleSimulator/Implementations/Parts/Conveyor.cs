@@ -1,11 +1,12 @@
-﻿using WBG.BiscuitMachine.ConsoleSimulator.Interfaces.Parts;
+﻿using WBG.BiscuitMachine.ConsoleSimulator.Interfaces;
+using WBG.BiscuitMachine.ConsoleSimulator.Interfaces.Parts;
 
 namespace WBG.BiscuitMachine.ConsoleSimulator.Implementations.Parts;
 
 public class Conveyor : IConveyor
 {
-    private readonly Queue<Cookie> _cookieQueue = new Queue<Cookie>();
     private readonly IBasket _basket;
+    private readonly Queue<Cookie> _cookieQueue = new Queue<Cookie>();
 
     public Queue<Cookie> ConveyorBelt
     {
@@ -20,13 +21,13 @@ public class Conveyor : IConveyor
     public void Start()
     {
         //TODO: need some logic here!
-        Console.WriteLine($"START C");
+        Console.WriteLine($"Conveyor belt Start!");
     }
 
     public void Stop()
     {
         //TODO: need some logic here!
-        Console.WriteLine($"STOP C");
+        Console.WriteLine($"Conveyor belt Stop!");
     }
 
     public void Continue()
@@ -46,9 +47,36 @@ public class Conveyor : IConveyor
         _cookieQueue.Enqueue(cookie);
     }
 
-    public void DequeueCookie()
+    public Cookie DequeueCookie()
     {
         var cookie = _cookieQueue.Dequeue();
         _basket.AddToBasket(cookie);
+
+        return cookie;
+    }
+
+    public void ModifyElementAtIndex(int index, string partName, ICookieState state, double thickness = default)
+    {
+        Cookie[] tempArray = _cookieQueue.ToArray();
+        int queueLength = tempArray.Length;
+
+        if (index >= 0 && index < queueLength)
+        {
+            if (partName.Equals("Stamper"))
+            {
+                tempArray[index].Thickness -= thickness;
+                tempArray[index].State = state;
+            }
+            if (partName.Equals("Oven"))
+            {
+                tempArray[index].State = state;
+            }
+
+            _cookieQueue.Clear();
+            foreach (var obj in tempArray)
+            {
+                _cookieQueue.Enqueue(obj);
+            }
+        }
     }
 }

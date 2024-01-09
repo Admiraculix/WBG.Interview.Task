@@ -25,17 +25,16 @@ class Program
 
         // Create machine parts
         ICookieFactory cookieFactory = new CookieFactory();
-        IStamper stamper = new Stamper();
         IBasket basket = new Basket();
         IConveyor conveyor = new Conveyor(basket);
         IExtruder extruder = new Extruder(cookieFactory, conveyor);
+        IStamper stamper = new Stamper(conveyor);
         IOven oven = new Oven(conveyor);
         IMotor motor = new Motor(conveyor);
         ISwitch machineSwitch = new Switch(oven, motor);
 
         // Create the biscuit machine using DI
         BiscuitMachineSimulator biscuitMachine = new BiscuitMachineSimulator(machineSwitch, motor, extruder, stamper, oven, conveyor, basket);
-
 
         biscuitMachine.Basket.DisplayCookieCount();
         Console.ResetColor();
@@ -77,23 +76,27 @@ class Program
 
             if (biscuitMachine.Switch.GetState is MachineOnState)
             {
-                var newCookie = biscuitMachine.Extruder.ExtrudeCookie();
-                biscuitMachine.Stamper.StampCookie(newCookie);
-                biscuitMachine.Oven.BakeCookie(newCookie);
+                for (int i = 0; i < motor.Revolutions; i++)
+                {
+                    biscuitMachine.Extruder.CurrentPulse = i + 1;
+                    biscuitMachine.Stamper.CurrentPulse = i + 1;
+
+                    var newCookie = biscuitMachine.Extruder.ExtrudeCookie();
+                    biscuitMachine.Stamper.StampCookie(newCookie);
+
+                }
+
+                biscuitMachine.Oven.BakeCookie();
 
                 biscuitMachine.Basket.DisplayCookieCount();
-                Console.WriteLine($"---> {conveyor.ConveyorBelt.Count}");
-
+                Console.WriteLine($"---> {nameof(conveyor.ConveyorBelt)} with cookie count to be baked: {conveyor.ConveyorBelt.Count}!\n");
             }
-            //else if (biscuitMachine.Switch.GetState is MachinePausedState)
-            //{
-            //    //TODO: logic here!?
-            //}
-            //else
-            //{
-            //    biscuitMachine.Oven.BakeCookie(conveyor.DequeueCookie(), biscuitMachine.Switch.GetState);
-            //}
 
+            //TODO: Fix me
+            //if (biscuitMachine.Switch.GetState is MachineOffState)
+            //{
+            //    biscuitMachine.Oven.BakeCookie();
+            //}
         }
     }
 }
