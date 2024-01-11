@@ -15,7 +15,7 @@ public class Switch : ISwitch
     {
         _oven = oven;
         _motor = motor;
-        _currentState = new MachineOffState(_motor);
+        _currentState = new MachinePausedState();
     }
 
     public void TurnOn()

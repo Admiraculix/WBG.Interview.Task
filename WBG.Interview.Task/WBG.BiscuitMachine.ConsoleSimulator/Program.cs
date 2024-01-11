@@ -36,11 +36,10 @@ class Program
         // Create the biscuit machine using DI
         BiscuitMachineSimulator biscuitMachine = new BiscuitMachineSimulator(machineSwitch, motor, extruder, stamper, oven, conveyor, basket);
 
+        StartingLogo.DisplayLogo();
         biscuitMachine.Basket.DisplayCookieCount();
         Console.ResetColor();
-        var operationString = "Enter operation";
-        var operatorCommandKeys = "(N: On, F: Off, P: Pause): ";
-        Console.WriteLine($"{Emotes.Tools} {Styles.BoldText(operationString)} {Styles.ItalicText(operatorCommandKeys)}");
+        //SwitchBox.DisplayControlMenuOperations();
 
         // Simulation loop
         while (true)
@@ -70,27 +69,27 @@ class Program
             }
             else if (biscuitMachine.Switch.GetState is MachineOffState)
             {
-                SwitchBox.Control(biscuitMachine); //TODO: fix me
-
                 if (biscuitMachine.Oven.GetTemperature() > 0)
                 {
                     biscuitMachine.Oven.IsHeatingElementOn = true;
+                    biscuitMachine.Oven.BakeCookie();
+                    Console.WriteLine($"---> {nameof(conveyor.ConveyorBelt)} with cookie count to be baked: {conveyor.ConveyorBelt.Count}!\n");
                 }
 
-                biscuitMachine.Oven.BakeCookie();
-
                 biscuitMachine.Basket.DisplayCookieCount();
-                Console.WriteLine($"---> {nameof(conveyor.ConveyorBelt)} with cookie count to be baked: {conveyor.ConveyorBelt.Count}!\n");
 
                 if (conveyor.ConveyorBelt.Count == 0 && biscuitMachine.Oven.GetTemperature() > 0 && biscuitMachine.Switch.GetState is MachineOffState)
                 {
                     biscuitMachine.Oven.IsHeatingElementOn = false;
                     biscuitMachine.Oven.SetTemperature(0);
+                    break;
                 }
             }
             else
             {
-                //TODO: Pause Logic
+                SwitchBox.DisplayControlMenuOperations();
+                biscuitMachine.Oven.DisplayTemperature();
+                SwitchBox.Control(biscuitMachine);
             }
         }
     }

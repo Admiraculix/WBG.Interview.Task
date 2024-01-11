@@ -60,19 +60,24 @@ public class Oven : IOven
         return _temperature;
     }
 
+    public void DisplayTemperature(string infoText = "Oven Temperature: ")
+    {
+        Console.ForegroundColor = ConsoleColor.DarkYellow;
+        Console.Write($"{infoText}");
+        Console.ResetColor();
+
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.Write($"{_temperature}°C\n");
+        Console.ResetColor();
+    }
+
     public void BakeCookie()
     {
         if (IsHeatingElementOn)
         {
             if (_conveyor.ConveyorBelt.Count > 0)
             {
-                Console.ForegroundColor = ConsoleColor.DarkYellow;
-                Console.Write("Baking cookie... Oven Temperature: ");
-                Console.ResetColor();
-
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.Write($"{_temperature}°C\n");
-                Console.ResetColor();
+                DisplayTemperature("Baking cookie... Oven Temperature: ");
 
                 // Simulate baking process (you can add more logic here)
                 var currentCookie = _conveyor.DequeueCookie();
@@ -85,7 +90,7 @@ public class Oven : IOven
         }
         else
         {
-            if (_conveyor.ConveyorBelt.Count == 0)
+            if (_conveyor.ConveyorBelt.Count == 0 && !IsHeatingElementOn)
             {
                 Console.WriteLine("Cannot bake cookie. Heating element is off.");
             }
