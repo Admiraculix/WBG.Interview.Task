@@ -19,6 +19,9 @@ public static class SwitchBox
             case 'F':
             case 'f':
                 biscuitMachine.Switch.TurnOff();
+                biscuitMachine.Extruder.Stop();
+                biscuitMachine.Stamper.Stop();
+                biscuitMachine.Oven.TurnOffHeatingElement();
                 break;
 
             case 'P':

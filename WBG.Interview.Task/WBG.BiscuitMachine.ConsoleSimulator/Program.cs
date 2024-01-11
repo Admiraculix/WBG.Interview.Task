@@ -39,8 +39,20 @@ class Program
         StartingLogo.DisplayLogo();
         biscuitMachine.Basket.DisplayCookieCount();
         Console.ResetColor();
-        //SwitchBox.DisplayControlMenuOperations();
 
+        try
+        {
+            MainLoop(biscuitMachine);
+        }
+        catch (Exception ex)
+        {
+            MainLoop(biscuitMachine);
+        }
+
+    }
+
+    public static void MainLoop(BiscuitMachineSimulator biscuitMachine)
+    {
         // Simulation loop
         while (true)
         {
@@ -52,38 +64,44 @@ class Program
 
             if (biscuitMachine.Switch.GetState is MachineOnState)
             {
-                for (int i = 0; i < motor.Revolutions; i++)
+                for (int i = 0; i < biscuitMachine.Motor.Revolutions; i++)
                 {
                     biscuitMachine.Extruder.CurrentPulse = i + 1;
                     biscuitMachine.Stamper.CurrentPulse = i + 1;
 
                     var newCookie = biscuitMachine.Extruder.ExtrudeCookie();
                     biscuitMachine.Stamper.StampCookie(newCookie);
-
                 }
 
                 biscuitMachine.Oven.BakeCookie();
 
                 biscuitMachine.Basket.DisplayCookieCount();
-                Console.WriteLine($"---> {nameof(conveyor.ConveyorBelt)} with cookie count to be baked: {conveyor.ConveyorBelt.Count}!\n");
+                Console.WriteLine($"---> {nameof(biscuitMachine.Conveyor.ConveyorBelt)} with cookie count to be baked: {biscuitMachine.Conveyor.ConveyorBelt.Count}!\n");
             }
             else if (biscuitMachine.Switch.GetState is MachineOffState)
             {
-                if (biscuitMachine.Oven.GetTemperature() > 0)
+                if (biscuitMachine.Conveyor.ConveyorBelt.Count > 0 && biscuitMachine.Oven.GetTemperature() > 0)
                 {
                     biscuitMachine.Oven.IsHeatingElementOn = true;
                     biscuitMachine.Oven.BakeCookie();
-                    Console.WriteLine($"---> {nameof(conveyor.ConveyorBelt)} with cookie count to be baked: {conveyor.ConveyorBelt.Count}!\n");
+                    Console.WriteLine($"---> {nameof(biscuitMachine.Conveyor.ConveyorBelt)} with cookie count to be baked: {biscuitMachine.Conveyor.ConveyorBelt.Count}!\n");
                 }
-
-                biscuitMachine.Basket.DisplayCookieCount();
-
-                if (conveyor.ConveyorBelt.Count == 0 && biscuitMachine.Oven.GetTemperature() > 0 && biscuitMachine.Switch.GetState is MachineOffState)
+                else if (biscuitMachine.Conveyor.ConveyorBelt.Count == 0 && biscuitMachine.Oven.GetTemperature() > 0 && biscuitMachine.Switch.GetState is MachineOffState)
                 {
                     biscuitMachine.Oven.IsHeatingElementOn = false;
                     biscuitMachine.Oven.SetTemperature(0);
-                    break;
+
+                    SwitchBox.DisplayControlMenuOperations();
+                    SwitchBox.Control(biscuitMachine);
+                    // break;
                 }
+                else
+                {
+                    SwitchBox.DisplayControlMenuOperations();
+                    SwitchBox.Control(biscuitMachine);
+                }
+
+                biscuitMachine.Basket.DisplayCookieCount();
             }
             else
             {

@@ -2,6 +2,7 @@
 
 public interface IExtruder
 {
+    void Stop();
     Cookie ExtrudeCookie();
-   int CurrentPulse { get; set; }
+    int CurrentPulse { get; set; }
 }

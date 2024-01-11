@@ -1,4 +1,5 @@
-﻿using WBG.BiscuitMachine.ConsoleSimulator.Constants;
+﻿using System.Threading;
+using WBG.BiscuitMachine.ConsoleSimulator.Constants;
 using WBG.BiscuitMachine.ConsoleSimulator.Interfaces.Parts;
 using WBG.BiscuitMachine.ConsoleSimulator.States.Cookies;
 
@@ -10,13 +11,14 @@ public class Oven : IOven
 
     private bool _isHeatingElementOn;
     private int _temperature = 0;
-
-    public bool IsHeatingElementOn { get => _isHeatingElementOn; set => _isHeatingElementOn = value; }
+    private CancellationTokenSource _tokenSource;
 
     public Oven(IConveyor conveyor)
     {
         _conveyor = conveyor;
+        _tokenSource = new CancellationTokenSource();
     }
+    public bool IsHeatingElementOn { get => _isHeatingElementOn; set => _isHeatingElementOn = value; }
 
     public void TurnOnHeatingElement()
     {
@@ -41,6 +43,8 @@ public class Oven : IOven
         Console.ForegroundColor = ConsoleColor.DarkGreen;
         Console.WriteLine("Oven Heating Element is Off");
         Console.ResetColor();
+
+        _tokenSource.Cancel();
     }
 
     public void SetTemperature(int temperature)
@@ -79,13 +83,22 @@ public class Oven : IOven
             {
                 DisplayTemperature("Baking cookie... Oven Temperature: ");
 
-                // Simulate baking process (you can add more logic here)
+                // Simulate baking process
                 var currentCookie = _conveyor.DequeueCookie();
                 currentCookie.State = new CookedCookieState(); // Change the state to cooked
 
-                Thread.Sleep(5000); // Simulating 5 seconds of baking time
-
-                Console.WriteLine($"{Emotes.Cookie} Cookie baked!\n\t{currentCookie}");
+                try
+                {
+                    // Simulating 5 seconds of baking time, with cancellation support
+                    Thread.Sleep(5000);
+                    _tokenSource.Token.ThrowIfCancellationRequested();
+                    Console.WriteLine($"{Emotes.Cookie} Cookie baked!\n\t{currentCookie}");
+                }
+                catch (Exception)
+                {
+                    _tokenSource = new CancellationTokenSource();
+                    Console.WriteLine("Baking canceled.");
+                }
             }
         }
         else

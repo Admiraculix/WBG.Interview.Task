@@ -20,13 +20,11 @@ public class Conveyor : IConveyor
 
     public void Start()
     {
-        //TODO: need some logic here!
         Console.WriteLine($"Conveyor belt Start!");
     }
 
     public void Stop()
     {
-        //TODO: need some logic here!
         Console.WriteLine($"Conveyor belt Stop!");
     }
 
